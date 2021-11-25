@@ -17,7 +17,7 @@ function Header(props) {
             </div>            
           ) : (
             <>
-            {pathname === "/signin" ?
+            {pathname === "/sign-in" ?
               <Link className="header__link" to="/sign-up">Регистрация</Link> :
               <Link className="header__link" to="/sign-in">Войти</Link>
             }
