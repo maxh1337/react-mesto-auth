@@ -1,9 +1,6 @@
 import React from 'react';
 
 class ImagePopup extends React.Component {
-
-
-
 render(){
     if (this.props.card !== null) {
     return(
