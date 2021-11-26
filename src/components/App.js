@@ -52,6 +52,7 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setSelectedCard(null)
+    setIsInfoTooltipOpen(false);
   };
   function handleUpdateUser(user) {
     apiData.setUserData(user)
@@ -184,8 +185,8 @@ function App() {
 
   return (
   <CurrentUserContext.Provider value={currentUser}>
-    <Header loggedIn={loggedIn} email={email} onSignOut={handleSignOut}/>
       <BrowserRouter>
+      <Header loggedIn={loggedIn} email={email} onSignOut={handleSignOut}/>
         <Switch> 
           <Route path="/sign-in">
             <Login onAuthorization={handleAuthorization}/>
