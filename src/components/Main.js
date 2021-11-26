@@ -10,20 +10,6 @@ function Main(props) {
    // Подписываемся на контекст CurrentCardsContext
    const cardsData = React.useContext(CurrentCardsContext);
 
-  function CardList(props) {
-    const cards = props.cards;
-
-    const listCards = cards.map((card) => (
-      <Card card={card} onCardClick={props.onCardClick} key={card._id}
-      onCardLike={props.onCardLike} setCards={props.setCards}
-      onCardDelete={props.onCardDelete}/>
-      ));
-      return(
-        <ul className="elements__list">
-          {listCards}
-        </ul>
-      );
-  }
     return(
         <main className="content">
         <section className="profile">
@@ -37,7 +23,18 @@ function Main(props) {
           </div>
           <button onClick={props.onAddPlace} type="button" className="profile__add-button"/>
         </section>
-          <CardList cards={cardsData} onCardClick={props.onCardClick} onCardLike={props.onCardLike} setCards={props.setCards} onCardDelete={props.onCardDelete}/>
+          <ul className="elements__list">
+          {props.cards.map((card) => (
+          <Card 
+            setCards={props.setCards}
+            key={card._id}
+            card={card}
+            onCardClick={props.onCardClick}
+            onCardLike={props.onCardLike}
+            onCardDelete={props.onCardDelete}
+          />
+        ))};
+          </ul>
       </main>
     )
 }

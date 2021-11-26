@@ -7,7 +7,6 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import  {apiData}  from '../utils/Api';
-import { CurrentCardsContext }  from '../contexts/CurrentCardsContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
@@ -24,7 +23,7 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
-  const [currentCards, setCurrentCards] = React.useState([]);
+  const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false)
   const history = useHistory();
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
@@ -54,6 +53,7 @@ function App() {
     setSelectedCard(null)
     setIsInfoTooltipOpen(false);
   };
+
   function handleUpdateUser(user) {
     apiData.setUserData(user)
     .then((res) => {
@@ -81,9 +81,9 @@ function App() {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    apiData.changeLikeCardStatus(card._id, isLiked, setCurrentCards)
+    apiData.changeLikeCardStatus(card._id, isLiked, setCards)
     .then((newCard) => {
-      setCurrentCards((cardsData) => cardsData.map((c) => c._id === card._id ? newCard : c));
+      setCards((cardsData) => cardsData.map((c) => c._id === card._id ? newCard : c));
     })
     .catch((err) => {
       console.log(err);
@@ -95,7 +95,7 @@ function App() {
     // Отправляем запрос в API
     apiData.deleteCard(deletedCard._id)
     .then(() => {
-      setCurrentCards((cardsData) => cardsData.filter((c) => {return c._id !== deletedCard._id }));
+      setCards((cardsData) => cardsData.filter((c) => {return c._id !== deletedCard._id }));
     })
     .catch((err) => {
       console.log(err);
@@ -106,7 +106,7 @@ function App() {
     apiData.postCard(newCard)
     .then((res) => {
       // Создадаем экземпляр карточки
-      setCurrentCards([res, ...currentCards]); 
+      setCards([res, ...cards]); 
       closeAllPopups();
     })
     .catch((err) => {
@@ -122,7 +122,7 @@ function App() {
     ])
     .then((res) => {
       setCurrentUser(res[0]);
-      setCurrentCards(res[1])
+      setCards(res[1])
     })
     .catch((err) => {
       console.log(err);
@@ -185,7 +185,6 @@ function App() {
 
   return (
   <CurrentUserContext.Provider value={currentUser}>
-      <BrowserRouter>
       <Header loggedIn={loggedIn} email={email} onSignOut={handleSignOut}/>
         <Switch> 
           <Route path="/sign-in">
@@ -196,19 +195,16 @@ function App() {
           </Route>
           <ProtectedRoute 
           path="/" loggedIn={loggedIn} component={Main} onEditProfile={handleEditProfileClick} onCardClick={handleCardClick}  
-          onAddPlace={handleAddPlaceClick} setCards={setCurrentCards}  onCardDelete={handleCardDelete}
+          onAddPlace={handleAddPlaceClick} cards={cards}  onCardDelete={handleCardDelete}
           onEditAvatar={handleEditAvatarClick} onCardLike={handleCardLike}
           />
         </Switch>
-      </BrowserRouter>
-      <CurrentCardsContext.Provider value={currentCards}>
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/> 
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
         <PopupWithForm name='delete-confirmation' title='Вы уверены?' buttonName='Да' onClosePopup={closeAllPopups}/>
         <ImagePopup card={selectedCard} onClosePopup={closeAllPopups}/>
         <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} onState={isSuccess} />
-      </CurrentCardsContext.Provider>
     <Footer />
   </CurrentUserContext.Provider>
   )};
