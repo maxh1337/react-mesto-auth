@@ -1,0 +1,29 @@
+.profile {
+  display: flex;
+  align-items: center;
+
+  position: relative;
+
+  padding-top: 41px;
+  padding-bottom: 51px;
+}
+
+@media screen and (max-width: 767px) {
+  .profile {
+    flex-direction: column;
+    padding-bottom: 0;
+  }
+}
+
+@media screen and (min-width: 880px) and (min-height: 1024px) {
+  .profile {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+
+    backdrop-filter: blur(30px) saturate(2);
+    background-color: rgba(0, 0, 0, 0.75);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    clip-path: inset(0 0 -20px);
+  }
+}
