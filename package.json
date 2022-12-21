@@ -8,14 +8,12 @@
     "start": "node back/server",
     "server": "nodemon back/server",
     "client": "yarn run start --prefix front",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "pretty": "prettier --write \"./**/*.{js,jsx,json}\""
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "colors": "^1.4.0",
-    "concurrently": "^7.6.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.0"

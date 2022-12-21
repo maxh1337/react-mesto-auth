@@ -42,7 +42,7 @@ const Register = () => {
 
 	return (
 		<div className="content auth">
-			<h2 className="auth__title">Sign In</h2>
+			<h2 className="auth__title">Sign Up</h2>
 
 			<form onSubmit={handleSubmit} className="form">
 				<input
