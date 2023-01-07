@@ -10,26 +10,26 @@ export const getUserProfile = expressAsyncHandler(async (req, res) => {
 })
 
 export const changeUserData = expressAsyncHandler(async (req, res) => {
-	const {avatar, name, description} = req.body
+	const { avatar, name, description } = req.body
+
+	console.log(req.body)
 
 	const user = await User.findById(req.user._id)
-	if(!user) {
+	if (!user) {
 		res.status(400)
 		throw new Error('User not found')
 	}
 
-	if(avatar){
+	if (avatar) {
 		user.avatar = avatar
 	}
-	if(name){
+	if (name) {
 		user.name = name
 	}
-	if(description){
+	if (description) {
 		user.description = description
 	}
 
-	
 	await user.save()
 	res.json(user)
 })
-

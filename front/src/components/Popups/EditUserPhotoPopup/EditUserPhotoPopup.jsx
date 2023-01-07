@@ -2,12 +2,17 @@ import React, { useState } from 'react'
 import { useMutation } from 'react-query'
 import { $api } from '../../../api/api'
 
-const EditUserPhotoPopup = ({ isVisible, onClick, refetch, closeAllPopups }) => {
-	const [url, setUrl] = useState('')
+const EditUserPhotoPopup = ({
+	isVisible,
+	onClick,
+	refetch,
+	closeAllPopups,
+}) => {
+	const [avatar, setAvatar] = useState('')
 
 	const handleSubmit = e => {
 		e.preventDefault()
-        editAvatar()
+		editAvatar()
 	}
 
 	const { mutate: editAvatar } = useMutation(
@@ -16,15 +21,15 @@ const EditUserPhotoPopup = ({ isVisible, onClick, refetch, closeAllPopups }) => 
 			$api({
 				url: '/users/profile',
 				type: 'PUT',
-				body: { url },
+				body: { avatar },
 				auth: true,
 			}),
 		{
-            onSuccess(){
-                refetch()
-                closeAllPopups()
-            }
-        }
+			onSuccess() {
+				refetch()
+				closeAllPopups()
+			},
+		}
 	)
 
 	return (
@@ -32,7 +37,7 @@ const EditUserPhotoPopup = ({ isVisible, onClick, refetch, closeAllPopups }) => 
 			className={isVisible ? 'popup popup_opened' : 'popup'}
 			onClick={() => {
 				onClick()
-				setUrl('')
+				setAvatar('')
 			}}
 		>
 			<div className="popup__container" onClick={e => e.stopPropagation()}>
@@ -46,8 +51,8 @@ const EditUserPhotoPopup = ({ isVisible, onClick, refetch, closeAllPopups }) => 
 					<input
 						className="form__input"
 						placeholder="Ссылка на картинку"
-						value={url}
-						onChange={e => setUrl(e.target.value)}
+						value={avatar}
+						onChange={e => setAvatar(e.target.value)}
 					/>
 					<button
 						title="Обновить"
